@@ -24,19 +24,17 @@ const textData = {
     vend: 'ವ್ಯಾಪಾರಿ (Vendor)',
     edit: 'ಎಡಿಟರ್ (Editor)',
     phone: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (10 ಅಂಕಿ)',
-    pin: 'ಎಡಿಟರ್ ಪಾಸ್‌ವರ್ಡ್ (ಕನಿಷ್ಠ 8 ಅಂಕಿ: 12345678)',
+    pin: 'ಎಡಿಟರ್ ಪಾಸ್‌ವರ್ಡ್ (12345678)',
     login: 'ಲಾಗಿನ್ ಆಗಿ',
     logout: 'ಲಾಗ್ ಔಟ್',
-    // New Vendor Registration
     newVendBtn: '+ ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ (Register Vendor)',
     backLoginBtn: '← ಈಗಾಗಲೇ ನೋಂದಾಯಿಸಿದ್ದೀರಾ? ಲಾಗಿನ್ ಆಗಿ',
     regTitle: 'ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ (Vendor Registration)',
     bizName: 'ವ್ಯಾಪಾರ / ಶೋರೂಮ್ ಹೆಸರು (Business Name)',
     regFeeNote: 'ನೋಂದಣಿ ಶುಲ್ಕ (Registration Fee): ₹',
     payRegBtn: 'ಶುಲ್ಕ ಪಾವತಿಸಿ ನೋಂದಾಯಿಸಿ',
-    pendingApprovalBanner: '⏳ ನಿಮ್ಮ ವ್ಯಾಪಾರಿ ಖಾತೆ ಅಡ್ಮಿನ್ ಅನುಮೋದನೆಗಾಗಿ ಬಾಕಿ ಇದೆ (Pending Admin Approval). ಅನುಮೋದನೆ ಸಿಕ್ಕ ನಂತರ ಕೊಟೇಶನ್ ಕಳುಹಿಸಬಹುದು.',
+    pendingApprovalBanner: '⏳ ನಿಮ್ಮ ವ್ಯಾಪಾರಿ ಖಾತೆ ಅಡ್ಮಿನ್ ಅನುಮೋದನೆಗಾಗಿ ಬಾಕಿ ಇದೆ (Pending Admin Approval).',
     notRegisteredErr: 'ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ವ್ಯಾಪಾರಿಯಾಗಿ ನೋಂದಣಿಯಾಗಿಲ್ಲ! ಮೊದಲು ನೋಂದಾಯಿಸಿ.',
-    // Categories & Quotes
     chooseCat: 'ಯಾವ ವಿಭಾಗಕ್ಕೆ ಕೊಟೇಶನ್ ಬೇಕು?',
     cats: [
       '🚗 ಕಾರ್ (Car)',
@@ -65,18 +63,17 @@ const textData = {
     chatTitle: 'ನೇರ ಚಾಟ್ (Direct Chat)',
     typeMsg: 'ಸಂದೇಶ ಟೈಪ್ ಮಾಡಿ...',
     sendBtn: 'ಕಳುಹಿಸಿ',
-    // Editor Tabs & Labels
-    tabRev: '💰 ಆದಾಯ (Revenue)',
-    tabVend: '👥 ವ್ಯಾಪಾರಿಗಳು (Vendors)',
-    tabSet: '⚙️ ಸೆಟ್ಟಿಂಗ್ಸ್ (Settings)',
+    tabRev: '💰 ಆದಾಯ',
+    tabVend: '👥 ವ್ಯಾಪಾರಿಗಳು',
+    tabSet: '⚙️ ಸೆಟ್ಟಿಂಗ್ಸ್',
     totalRev: 'ಒಟ್ಟು ಸಂಗ್ರಹವಾದ ಆದಾಯ',
     txHistory: 'ವಹಿವಾಟಿನ ಪಟ್ಟಿ (Transaction History)',
     vendorListTitle: 'ವ್ಯಾಪಾರಿಗಳ ಖಾತೆ ಮತ್ತು ಅನುಮೋದನೆ',
     approveBtn: '✅ ಅನುಮೋದಿಸಿ (Approve)',
     blockBtn: '🚫 ನಿರ್ಬಂಧಿಸಿ (Block)',
-    approvedBadge: '✅ ಅನುಮೋದಿತ (Approved)',
-    pendingBadge: '⏳ ಅನುಮೋದನೆ ಬಾಕಿ (Pending)',
-    blockedBadge: '🚫 ನಿರ್ಬಂಧಿತ (Blocked)',
+    approvedBadge: '✅ ಅನುಮೋದಿತ',
+    pendingBadge: '⏳ ಬಾಕಿ ಇದೆ',
+    blockedBadge: '🚫 ನಿರ್ಬಂಧಿತ',
     blockedWarning: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಿ ಖಾತೆಯನ್ನು ಎಡಿಟರ್ ನಿರ್ಬಂಧಿಸಿದ್ದಾರೆ.',
     feeSet: 'ಪ್ರತಿ ಕೊಟೇಶನ್ ಶುಲ್ಕ (₹)',
     regFeeSet: 'ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ ಶುಲ್ಕ (₹)',
@@ -96,19 +93,17 @@ const textData = {
     vend: 'User / Vendor',
     edit: 'Editor / Admin',
     phone: 'Mobile Number (10 digits)',
-    pin: 'Editor Password (Min 8 digits: 12345678)',
+    pin: 'Editor Password (12345678)',
     login: 'Login',
     logout: 'Logout',
-    // New Vendor Registration
     newVendBtn: '+ New Vendor Registration',
     backLoginBtn: '← Already Registered? Vendor Login',
     regTitle: 'New Vendor Registration',
     bizName: 'Business / Showroom Name',
     regFeeNote: 'One-Time Registration Fee: ₹',
     payRegBtn: 'Pay Fee & Submit Registration',
-    pendingApprovalBanner: '⏳ Your Vendor account is Pending Admin Approval. You can send quotes once the Admin approves your account.',
+    pendingApprovalBanner: '⏳ Your Vendor account is Pending Admin Approval.',
     notRegisteredErr: 'Mobile number not registered as Vendor! Please register first.',
-    // Categories & Quotes
     chooseCat: 'Select Category for Quotation',
     cats: [
       '🚗 Car',
@@ -137,7 +132,6 @@ const textData = {
     chatTitle: 'Direct Chat',
     typeMsg: 'Type a message...',
     sendBtn: 'Send',
-    // Editor Tabs & Labels
     tabRev: '💰 Revenue',
     tabVend: '👥 Vendors',
     tabSet: '⚙️ Settings',
@@ -147,7 +141,7 @@ const textData = {
     approveBtn: '✅ Approve Vendor',
     blockBtn: '🚫 Block Vendor',
     approvedBadge: '✅ Approved',
-    pendingBadge: '⏳ Pending Approval',
+    pendingBadge: '⏳ Pending',
     blockedBadge: '🚫 Blocked',
     blockedWarning: 'Your vendor account has been blocked by Admin.',
     feeSet: 'Fee Per Quotation (₹)',
@@ -170,16 +164,14 @@ export default function App() {
   const [pin, setPin] = useState('');
   const [logged, setLogged] = useState(false);
 
-  // Vendor Registration Form States
   const [isRegisteringVendor, setIsRegisteringVendor] = useState(false);
   const [regBizName, setRegBizName] = useState('');
   const [regPhone, setRegPhone] = useState('');
   const [regCatIdx, setRegCatIdx] = useState(0);
 
-  // Editor Settings & 8+ Digit Password
   const [adminPassword, setAdminPassword] = useState('12345678');
   const [newPasswordInput, setNewPasswordInput] = useState('12345678');
-  const [editorTab, setEditorTab] = useState('vend'); // 'rev' | 'vend' | 'set'
+  const [editorTab, setEditorTab] = useState('vend');
   const [fee, setFee] = useState('49');
   const [vendorRegFee, setVendorRegFee] = useState('499');
   const [bank, setBank] = useState('State Bank of India');
@@ -187,26 +179,22 @@ export default function App() {
   const [ifsc, setIfsc] = useState('SBIN0001234');
   const [upi, setUpi] = useState('prapp@sbi');
 
-  // Vendors List ('approved' | 'pending' | 'blocked')
   const [vendors, setVendors] = useState([
     { id: 'v1', name: 'Karnataka Motors Showroom', phone: '9123456780', category: 0, status: 'approved', paidReg: 499 },
     { id: 'v2', name: 'Annapoorna Grand Catering', phone: '9845012345', category: 3, status: 'approved', paidReg: 499 },
     { id: 'v3', name: 'Sri Lakshmi Electricals', phone: '9900112233', category: 2, status: 'pending', paidReg: 499 },
   ]);
 
-  // Transaction History & Revenue
   const [transactions, setTransactions] = useState([
     { id: 'TX101', vendor: 'Karnataka Motors (Reg Fee)', amount: 499, mode: 'UPI', date: '20 Nov 2026' },
     { id: 'TX102', vendor: 'Annapoorna Catering (Quote Fee)', amount: 49, mode: 'Debit Card', date: '20 Nov 2026' },
     { id: 'TX103', vendor: 'Sri Lakshmi Electricals (Reg Fee)', amount: 499, mode: 'UPI', date: '20 Nov 2026' },
   ]);
 
-  // Customer Input
   const [catIdx, setCatIdx] = useState(0);
   const [details, setDetails] = useState('');
   const [budget, setBudget] = useState('');
 
-  // Quotations List
   const [list, setList] = useState([
     {
       id: 1001,
@@ -233,7 +221,6 @@ export default function App() {
     },
   ]);
 
-  // Payment Gateway Modal ('quote' | 'vendor_reg')
   const [vPrice, setVPrice] = useState({});
   const [modal, setModal] = useState(false);
   const [paymentPurpose, setPaymentPurpose] = useState('quote');
@@ -270,3 +257,28 @@ export default function App() {
     }
 
     if (role === 'vend') {
+      const existingVendor = vendors.find((v) => v.phone === phone);
+      if (!existingVendor) {
+        Alert.alert('PR App', t.notRegisteredErr);
+        return;
+      }
+    }
+
+    setLogged(true);
+  };
+
+  const initiateVendorRegistration = () => {
+    if (!regBizName.trim() || regPhone.length < 10) {
+      Alert.alert('Error', lang === 'kn' ? 'ವ್ಯಾಪಾರದ ಹೆಸರು ಮತ್ತು 10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ' : 'Enter business name and 10-digit mobile');
+      return;
+    }
+    const alreadyExists = vendors.find((v) => v.phone === regPhone);
+    if (alreadyExists) {
+      Alert.alert('Error', lang === 'kn' ? 'ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಈಗಾಗಲೇ ನೋಂದಣಿಯಾಗಿದೆ!' : 'Already registered!');
+      return;
+    }
+    setPaymentPurpose('vendor_reg');
+    setModal(true);
+  };
+
+  const saveEditorSettings = () => {
