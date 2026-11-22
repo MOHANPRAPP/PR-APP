@@ -225,7 +225,7 @@ export default function App() {
   const [modal, setModal] = useState(false);
   const [paymentPurpose, setPaymentPurpose] = useState('quote');
   const [activeId, setActiveId] = useState(null);
-  const [payMode, setPayMode] = useState('UPI (GPay / PhonePe)');
+  const [payMode, setPayMode] = useState('UPI');
 
   const [chatModal, setChatModal] = useState(false);
   const [chatItemId, setChatItemId] = useState(null);
