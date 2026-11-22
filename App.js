@@ -1,284 +1,158 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
+  Alert,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Alert,
-  Modal,
-  Animated,
-  Linking,
+  View,
 } from 'react-native';
 
-import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
-
-const textData = {
-  kn: {
-    title: 'PR App - ಸ್ಮಾರ್ಟ್ ಕೊಟೇಶನ್',
-    selectRole: 'ನಿಮ್ಮ ಲಾಗಿನ್ ಆಯ್ಕೆಮಾಡಿ',
-    cust: 'ಕಸ್ಟಮರ್ (Customer)',
-    vend: 'ವ್ಯಾಪಾರಿ (Vendor)',
-    edit: 'ಎಡಿಟರ್ (Editor)',
-    phone: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ (10 ಅಂಕಿ)',
-    pin: 'ಎಡಿಟರ್ ಪಾಸ್‌ವರ್ಡ್ (12345678)',
-    login: 'ಲಾಗಿನ್ ಆಗಿ',
-    logout: 'ಲಾಗ್ ಔಟ್',
-    newVendBtn: '+ ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ (Register Vendor)',
-    backLoginBtn: '← ಈಗಾಗಲೇ ನೋಂದಾಯಿಸಿದ್ದೀರಾ? ಲಾಗಿನ್ ಆಗಿ',
-    regTitle: 'ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ (Vendor Registration)',
-    bizName: 'ವ್ಯಾಪಾರ / ಶೋರೂಮ್ ಹೆಸರು (Business Name)',
-    regFeeNote: 'ನೋಂದಣಿ ಶುಲ್ಕ (Registration Fee): ₹',
-    payRegBtn: 'ಶುಲ್ಕ ಪಾವತಿಸಿ ನೋಂದಾಯಿಸಿ',
-    pendingApprovalBanner: '⏳ ನಿಮ್ಮ ವ್ಯಾಪಾರಿ ಖಾತೆ ಅಡ್ಮಿನ್ ಅನುಮೋದನೆಗಾಗಿ ಬಾಕಿ ಇದೆ (Pending Admin Approval).',
-    notRegisteredErr: 'ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ವ್ಯಾಪಾರಿಯಾಗಿ ನೋಂದಣಿಯಾಗಿಲ್ಲ! ಮೊದಲು ನೋಂದಾಯಿಸಿ.',
-    chooseCat: 'ಯಾವ ವಿಭಾಗಕ್ಕೆ ಕೊಟೇಶನ್ ಬೇಕು?',
-    cats: [
-      '🚗 ಕಾರ್ (Car)',
-      '🏍️ ಬೈಕ್ (Bike)',
-      '⚡ ಎಲೆಕ್ಟ್ರಿಕಲ್ (Electrical)',
-      '🍲 ಫುಡ್ & ಕೇಟರಿಂಗ್ (Food)',
-      '🏠 ರಿಯಲ್ ಎಸ್ಟೇಟ್ (Property)',
-      '📱 ಮೊಬೈಲ್ & ಎಲೆಕ್ಟ್ರಾನಿಕ್ಸ್',
-      '🛋️ ಪೀಠೋಪಕರಣ (Furniture)',
-      '🎉 ಮದುವೆ & ಇವೆಂಟ್ಸ್ (Events)',
-      '✈️ ಟ್ರಾವೆಲ್ & ಟೂರ್ಸ್ (Travel)',
-      '🧱 ಕಟ್ಟಡ ಸಾಮಗ್ರಿ (Construction)',
-      '📦 ಇತರೆ (Others)',
-    ],
-    details: 'ಬೇಡಿಕೆಯ ವಿವರ (ಮಾಡೆಲ್, ಬಣ್ಣ, ಪ್ರಮಾಣ)',
-    budget: 'ಅಂದಾಜು ಬಜೆಟ್ (₹)',
-    reqBtn: 'ಕೊಟೇಶನ್ ಕೇಳಿ',
-    quotes: 'ಕೊಟೇಶನ್‌ಗಳ ಪಟ್ಟಿ',
-    price: 'ನಿಮ್ಮ ಕೊಟೇಶನ್ ಬೆಲೆ (₹)',
-    paySend: 'ಶುಲ್ಕ ಪಾವತಿಸಿ ಕಳುಹಿಸಿ',
-    pending: '⏳ ಬಾಕಿ ಇದೆ (Pending)',
-    quoted: '✅ ಕೊಟೇಶನ್ ಬೆಲೆ: ₹',
-    callBtn: '📞 ಕರೆ (Call)',
-    chatBtn: '💬 ಚಾಟ್ (Chat)',
-    pdfBtn: '📄 PDF ಕೊಟೇಶನ್ ಡೌನ್‌ಲೋಡ್',
-    chatTitle: 'ನೇರ ಚಾಟ್ (Direct Chat)',
-    typeMsg: 'ಸಂದೇಶ ಟೈಪ್ ಮಾಡಿ...',
-    sendBtn: 'ಕಳುಹಿಸಿ',
-    tabRev: '💰 ಆದಾಯ',
-    tabVend: '👥 ವ್ಯಾಪಾರಿಗಳು',
-    tabSet: '⚙️ ಸೆಟ್ಟಿಂಗ್ಸ್',
-    totalRev: 'ಒಟ್ಟು ಸಂಗ್ರಹವಾದ ಆದಾಯ',
-    txHistory: 'ವಹಿವಾಟಿನ ಪಟ್ಟಿ (Transaction History)',
-    vendorListTitle: 'ವ್ಯಾಪಾರಿಗಳ ಖಾತೆ ಮತ್ತು ಅನುಮೋದನೆ',
-    approveBtn: '✅ ಅನುಮೋದಿಸಿ (Approve)',
-    blockBtn: '🚫 ನಿರ್ಬಂಧಿಸಿ (Block)',
-    approvedBadge: '✅ ಅನುಮೋದಿತ',
-    pendingBadge: '⏳ ಬಾಕಿ ಇದೆ',
-    blockedBadge: '🚫 ನಿರ್ಬಂಧಿತ',
-    blockedWarning: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಿ ಖಾತೆಯನ್ನು ಎಡಿಟರ್ ನಿರ್ಬಂಧಿಸಿದ್ದಾರೆ.',
-    feeSet: 'ಪ್ರತಿ ಕೊಟೇಶನ್ ಶುಲ್ಕ (₹)',
-    regFeeSet: 'ಹೊಸ ವ್ಯಾಪಾರಿ ನೋಂದಣಿ ಶುಲ್ಕ (₹)',
-    bank: 'ಬ್ಯಾಂಕ್ ಹೆಸರು',
-    acc: 'ಖಾತೆ ಸಂಖ್ಯೆ (Account No)',
-    ifsc: 'IFSC ಕೋಡ್',
-    upi: 'UPI ID',
-    newPassLabel: 'ಹೊಸ ಎಡಿಟರ್ ಪಾಸ್‌ವರ್ಡ್ (ಕನಿಷ್ಠ 8 ಅಂಕಿ)',
-    save: 'ವಿವರ ಸೇವ್ ಮಾಡಿ',
-    payTitle: 'ಸುರಕ್ಷಿತ ಪೇಮೆಂಟ್ ಗೇಟ್‌ವೇ',
-    payNow: 'ಈಗಲೇ ಪಾವತಿಸಿ (Pay Now)',
-  },
-  en: {
-    title: 'PR App - Smart Quotations',
-    selectRole: 'Select Login Role',
-    cust: 'Customer',
-    vend: 'User / Vendor',
-    edit: 'Editor / Admin',
-    phone: 'Mobile Number (10 digits)',
-    pin: 'Editor Password (12345678)',
-    login: 'Login',
-    logout: 'Logout',
-    newVendBtn: '+ New Vendor Registration',
-    backLoginBtn: '← Already Registered? Vendor Login',
-    regTitle: 'New Vendor Registration',
-    bizName: 'Business / Showroom Name',
-    regFeeNote: 'One-Time Registration Fee: ₹',
-    payRegBtn: 'Pay Fee & Submit Registration',
-    pendingApprovalBanner: '⏳ Your Vendor account is Pending Admin Approval.',
-    notRegisteredErr: 'Mobile number not registered as Vendor! Please register first.',
-    chooseCat: 'Select Category for Quotation',
-    cats: [
-      '🚗 Car',
-      '🏍️ Bike',
-      '⚡ Electrical Items',
-      '🍲 Food & Catering',
-      '🏠 Real Estate / Property',
-      '📱 Mobiles & Electronics',
-      '🛋️ Furniture & Interiors',
-      '🎉 Events & Wedding',
-      '✈️ Travel & Tours',
-      '🧱 Construction Materials',
-      '📦 Others',
-    ],
-    details: 'Requirement Details (Model, Brand, Qty)',
-    budget: 'Expected Budget (₹)',
-    reqBtn: 'Request Quotation',
-    quotes: 'Quotations List',
-    price: 'Enter Quote Price (₹)',
-    paySend: 'Pay Fee & Send Quote',
-    pending: '⏳ Pending',
-    quoted: '✅ Quoted Price: ₹',
-    callBtn: '📞 Call',
-    chatBtn: '💬 Chat',
-    pdfBtn: '📄 Download PDF Quotation',
-    chatTitle: 'Direct Chat',
-    typeMsg: 'Type a message...',
-    sendBtn: 'Send',
-    tabRev: '💰 Revenue',
-    tabVend: '👥 Vendors',
-    tabSet: '⚙️ Settings',
-    totalRev: 'Total Collected Revenue',
-    txHistory: 'Transaction History',
-    vendorListTitle: 'Vendor Approvals & Management',
-    approveBtn: '✅ Approve Vendor',
-    blockBtn: '🚫 Block Vendor',
-    approvedBadge: '✅ Approved',
-    pendingBadge: '⏳ Pending',
-    blockedBadge: '🚫 Blocked',
-    blockedWarning: 'Your vendor account has been blocked by Admin.',
-    feeSet: 'Fee Per Quotation (₹)',
-    regFeeSet: 'Vendor Registration Fee (₹)',
-    bank: 'Bank Name',
-    acc: 'Account Number',
-    ifsc: 'IFSC Code',
-    upi: 'Merchant UPI ID',
-    newPassLabel: 'New Editor Password (Min 8 Digits)',
-    save: 'Save Settings',
-    payTitle: 'Secure Payment Gateway',
-    payNow: 'Pay Now',
-  },
-};
-
 export default function App() {
-  const [lang, setLang] = useState('kn');
   const [role, setRole] = useState(null);
   const [phone, setPhone] = useState('');
-  const [pin, setPin] = useState('');
-  const [logged, setLogged] = useState(false);
-
-  const [isRegisteringVendor, setIsRegisteringVendor] = useState(false);
-  const [regBizName, setRegBizName] = useState('');
-  const [regPhone, setRegPhone] = useState('');
-  const [regCatIdx, setRegCatIdx] = useState(0);
-
-  const [adminPassword, setAdminPassword] = useState('12345678');
-  const [newPasswordInput, setNewPasswordInput] = useState('12345678');
-  const [editorTab, setEditorTab] = useState('vend');
-  const [fee, setFee] = useState('49');
-  const [vendorRegFee, setVendorRegFee] = useState('499');
-  const [bank, setBank] = useState('State Bank of India');
-  const [acc, setAcc] = useState('30987654321');
-  const [ifsc, setIfsc] = useState('SBIN0001234');
-  const [upi, setUpi] = useState('prapp@sbi');
-
-  const [vendors, setVendors] = useState([
-    { id: 'v1', name: 'Karnataka Motors Showroom', phone: '9123456780', category: 0, status: 'approved', paidReg: 499 },
-    { id: 'v2', name: 'Annapoorna Grand Catering', phone: '9845012345', category: 3, status: 'approved', paidReg: 499 },
-    { id: 'v3', name: 'Sri Lakshmi Electricals', phone: '9900112233', category: 2, status: 'pending', paidReg: 499 },
-  ]);
-
-  const [transactions, setTransactions] = useState([
-    { id: 'TX101', vendor: 'Karnataka Motors (Reg Fee)', amount: 499, mode: 'UPI', date: '20 Nov 2026' },
-    { id: 'TX102', vendor: 'Annapoorna Catering (Quote Fee)', amount: 49, mode: 'Debit Card', date: '20 Nov 2026' },
-    { id: 'TX103', vendor: 'Sri Lakshmi Electricals (Reg Fee)', amount: 499, mode: 'UPI', date: '20 Nov 2026' },
-  ]);
-
-  const [catIdx, setCatIdx] = useState(0);
+  const [password, setPassword] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
   const [details, setDetails] = useState('');
-  const [budget, setBudget] = useState('');
 
-  const [list, setList] = useState([
-    {
-      id: 1001,
-      cat: 0,
-      details: 'Hyundai Creta SX - Black, On-road Price',
-      budget: '15,00,000',
-      quote: '14,75,000',
-      custPhone: '9876543210',
-      vendPhone: '9123456780',
-      messages: [
-        { sender: 'vend', text: 'ನಮಸ್ಕಾರ! ಈ ಬೆಲೆಯಲ್ಲಿ ಇನ್ಶೂರೆನ್ಸ್ ಮತ್ತು ಆಕ್ಸೆಸರೀಸ್ ಸೇರಿವೆ.' },
-        { sender: 'cust', text: 'ಧನ್ಯವಾದಗಳು, ಡೆಲಿವರಿ ಎಷ್ಟು ದಿನದಲ್ಲಿ ಸಿಗುತ್ತದೆ?' },
-      ],
-    },
-    {
-      id: 1002,
-      cat: 3,
-      details: '200 Plates South Indian Veg Wedding Meal',
-      budget: '60,000',
-      quote: '',
-      custPhone: '9988776655',
-      vendPhone: '',
-      messages: [],
-    },
-  ]);
-
-  const [vPrice, setVPrice] = useState({});
-  const [modal, setModal] = useState(false);
-  const [paymentPurpose, setPaymentPurpose] = useState('quote');
-  const [activeId, setActiveId] = useState(null);
-  const [payMode, setPayMode] = useState('UPI');
-
-  const [chatModal, setChatModal] = useState(false);
-  const [chatItemId, setChatItemId] = useState(null);
-  const [chatInput, setChatInput] = useState('');
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    fadeAnim.setValue(0);
-    Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
-  }, [logged, lang, editorTab, isRegisteringVendor]);
-
-  const t = textData[lang];
-
-  const doLogin = () => {
-    if (role === 'edit') {
-      if (pin.length < 8) {
-        Alert.alert('Error', lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ಕನಿಷ್ಠ 8 ಅಂಕಿಗಳಿರಬೇಕು!' : 'Password must be at least 8 digits!');
+  const login = () => {
+    if (role === 'editor') {
+      if (password.length < 8) {
+        Alert.alert('Error', 'Password must be at least 8 digits');
         return;
       }
-      if (pin === adminPassword) setLogged(true);
-      else Alert.alert('Error', lang === 'kn' ? 'ತಪ್ಪು ಪಾಸ್‌ವರ್ಡ್! (ಡೀಫಾಲ್ಟ್: 12345678)' : 'Incorrect Password! (Default: 12345678)');
+    } else if (phone.length < 10) {
+      Alert.alert('Error', 'Enter a 10-digit mobile number');
       return;
     }
 
-    if (phone.length < 10) {
-      Alert.alert('Error', lang === 'kn' ? '10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಹಾಕಿ' : 'Enter 10-digit mobile number');
-      return;
-    }
-
-    if (role === 'vend') {
-      const existingVendor = vendors.find((v) => v.phone === phone);
-      if (!existingVendor) {
-        Alert.alert('PR App', t.notRegisteredErr);
-        return;
-      }
-    }
-
-    setLogged(true);
+    setLoggedIn(true);
   };
 
-  const initiateVendorRegistration = () => {
-    if (!regBizName.trim() || regPhone.length < 10) {
-      Alert.alert('Error', lang === 'kn' ? 'ವ್ಯಾಪಾರದ ಹೆಸರು ಮತ್ತು 10 ಅಂಕಿಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ' : 'Enter business name and 10-digit mobile');
-      return;
-    }
-    const alreadyExists = vendors.find((v) => v.phone === regPhone);
-    if (alreadyExists) {
-      Alert.alert('Error', lang === 'kn' ? 'ಈ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ಈಗಾಗಲೇ ನೋಂದಣಿಯಾಗಿದೆ!' : 'Already registered!');
-      return;
-    }
-    setPaymentPurpose('vendor_reg');
-    setModal(true);
-  };
+  if (!loggedIn) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.loginContent}>
+          <Text style={styles.title}>PR App</Text>
+          <Text style={styles.subtitle}>Smart Quotations</Text>
 
-  const saveEditorSettings = () => {
+          <View style={styles.roleRow}>
+            {['customer', 'vendor', 'editor'].map((item) => (
+              <TouchableOpacity
+                key={item}
+                style={[styles.roleButton, role === item && styles.roleButtonActive]}
+                onPress={() => setRole(item)}
+              >
+                <Text style={[styles.roleText, role === item && styles.roleTextActive]}>
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {role === 'editor' ? (
+            <TextInput
+              style={styles.input}
+              placeholder="Editor Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          ) : (
+            <TextInput
+              style={styles.input}
+              placeholder="Mobile Number"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              maxLength={10}
+            />
+          )}
+
+          <TouchableOpacity style={styles.primaryButton} onPress={login}>
+            <Text style={styles.primaryButtonText}>Login</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.mainContent}>
+        <View style={styles.headerRow}>
+          <View>
+            <Text style={styles.title}>PR App</Text>
+            <Text style={styles.subtitle}>Welcome</Text>
+          </View>
+          <TouchableOpacity onPress={() => setLoggedIn(false)}>
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+
+        {role === 'customer' && (
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Request a quotation</Text>
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              placeholder="Requirement details"
+              value={details}
+              onChangeText={setDetails}
+              multiline
+            />
+            <TouchableOpacity
+              style={styles.primaryButton}
+              onPress={() => {
+                if (!details.trim()) {
+                  Alert.alert('Error', 'Enter requirement details');
+                  return;
+                }
+                Alert.alert('Success', 'Quotation request submitted');
+                setDetails('');
+              }}
+            >
+              <Text style={styles.primaryButtonText}>Submit Request</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {role !== 'customer' && (
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>
+              {role === 'editor' ? 'Editor Dashboard' : 'Vendor Dashboard'}
+            </Text>
+            <Text style={styles.bodyText}>
+              {role === 'editor'
+                ? 'Manage quotations, vendors, payments, and settings.'
+                : 'View customer requests and submit quotations.'}
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#F4F7FB' },
+  loginContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
+  mainContent: { padding: 20 },
+  title: { color: '#111827', fontSize: 30, fontWeight: '800' },
+  subtitle: { color: '#6B7280', fontSize: 16, marginBottom: 24 },
+  roleRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
+  roleButton: { flex: 1, borderWidth: 1, borderColor: '#D1D5DB', borderRadius: 10, paddingVertical: 12, alignItems: 'center', backgroundColor: '#FFF' },
+  roleButtonActive: { borderColor: '#2563EB', backgroundColor: '#DBEAFE' },
+  roleText: { color: '#374151', fontWeight: '600', fontSize: 12 },
+  roleTextActive: { color: '#1D4ED8' },
+  input: { width: '100%', borderWidth: 1, borderColor: '#D1D5DB', borderRadius: 10, backgroundColor: '#FFF', paddingHorizontal: 14, paddingVertical: 12, marginBottom: 16, color: '#111827' },
+  textArea: { minHeight: 100, textAlignVertical: 'top' },
+  primaryButton: { backgroundColor: '#2563EB', borderRadius: 10, paddingVertical: 14, alignItems: 'center' },
+  primaryButtonText: { color: '#FFF', fontSize: 16, fontWeight: '700' },
+  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
+  logoutText: { color: '#DC2626', fontWeight: '700', padding: 8 },
+  card: { backgroundColor: '#FFF', borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#E5E7EB' },
+  cardTitle: { color: '#111827', fontSize: 20, fontWeight: '700', marginBottom: 12 },
+  bodyText: { color: '#4B5563', lineHeight: 22 },
+});
